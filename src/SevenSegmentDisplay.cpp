@@ -1,10 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   SevenSegmentDisplay.cpp                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/28 15:48:06 by plouvel           #+#    #+#             */
+/*   Updated: 2024/03/28 15:52:50 by plouvel          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "SevenSegmentDisplay.hpp"
 #include <Arduino.h>
 #include <string.h>
 
-const uint8_t SevenSegmentDisplay::bitsMapping[SevenSegmentDisplay::nbrAvailableNumbers] = {
-    /* Numbers */
-
+const uint8_t SevenSegmentDisplay::numberBitsMapping[SevenSegmentDisplay::nbrAvailableNumbers] = {
     0b11111010, // 0
     0b00001010, // 1
     0b11011100, // 2
@@ -15,8 +25,6 @@ const uint8_t SevenSegmentDisplay::bitsMapping[SevenSegmentDisplay::nbrAvailable
     0b00011010, // 7
     0b11111110, // 8,
     0b10111110  // 9
-
-    /* Letters not yet implemented */
 };
 
 SevenSegmentDisplay::SevenSegmentDisplay(uint8_t latchPin, uint8_t clockPin, uint8_t dataPin) : latchPin(latchPin),
@@ -30,22 +38,15 @@ SevenSegmentDisplay::SevenSegmentDisplay(uint8_t latchPin, uint8_t clockPin, uin
 
 SevenSegmentDisplay::~SevenSegmentDisplay() {}
 
-void SevenSegmentDisplay::display(char toDisplay)
+void SevenSegmentDisplay::display(char *str) const
 {
-    uint8_t displayBitsMapping = 0;
-
-    if (!(toDisplay >= '0' && toDisplay <= '9'))
-    {
-        return;
-    }
-
-    displayBitsMapping = this->bitsMapping[toDisplay - '0'];
+    uint8_t bitsMapping = numberBitsMapping[*str - '0'];
 
     digitalWrite(this->latchPin, LOW);
     for (uint8_t i = 0; i < 8; i++)
     {
         digitalWrite(this->clockPin, LOW);
-        digitalWrite(this->dataPin, displayBitsMapping & (1U << i));
+        digitalWrite(this->dataPin, bitsMapping & (1U << i));
         digitalWrite(this->clockPin, HIGH);
     }
     digitalWrite(this->latchPin, HIGH);
