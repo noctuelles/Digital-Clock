@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:48:06 by plouvel           #+#    #+#             */
-/*   Updated: 2024/03/28 17:34:18 by plouvel          ###   ########.fr       */
+/*   Updated: 2024/03/28 21:39:30 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,18 @@ SevenSegmentDisplay::~SevenSegmentDisplay() {}
 
 void SevenSegmentDisplay::display(char c) const
 {
-    uint8_t bitsMapping = 0;
+    uint8_t registerBits = 0b00000000;
 
-    if (c == '#')
+    if (c != '#')
     {
-        bitsMapping = 0b00000000;
-    }
-    else
-    {
-        bitsMapping = numberBitsMapping[c - '0'];
+        registerBits = numberBitsMapping[c - '0'];
     }
 
     digitalWrite(this->latchPin, LOW);
     for (uint8_t i = 0; i < 8; i++)
     {
         digitalWrite(this->clockPin, LOW);
-        digitalWrite(this->dataPin, bitsMapping & (1U << i));
+        digitalWrite(this->dataPin, registerBits & (1U << i));
         digitalWrite(this->clockPin, HIGH);
     }
     digitalWrite(this->latchPin, HIGH);

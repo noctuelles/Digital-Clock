@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:47:01 by plouvel           #+#    #+#             */
-/*   Updated: 2024/03/28 17:34:27 by plouvel          ###   ########.fr       */
+/*   Updated: 2024/03/28 21:40:04 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ public:
 
 private:
     SevenSegmentDisplay() = delete;
-    SevenSegmentDisplay(const SevenSegmentDisplay &other) = delete;
-    SevenSegmentDisplay operator=(const SevenSegmentDisplay &other) = delete;
+    SevenSegmentDisplay(const SevenSegmentDisplay &src) = delete;
+    SevenSegmentDisplay &operator=(const SevenSegmentDisplay &rhs) = delete;
 
     static const uint8_t numberBitsMapping[nbrAvailableNumbers];
 
