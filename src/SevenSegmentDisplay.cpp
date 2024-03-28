@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:48:06 by plouvel           #+#    #+#             */
-/*   Updated: 2024/03/28 16:07:52 by plouvel          ###   ########.fr       */
+/*   Updated: 2024/03/28 17:34:18 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,17 @@ SevenSegmentDisplay::SevenSegmentDisplay(uint8_t latchPin, uint8_t clockPin, uin
 
 SevenSegmentDisplay::~SevenSegmentDisplay() {}
 
-void SevenSegmentDisplay::display(char *str) const
+void SevenSegmentDisplay::display(char c) const
 {
     uint8_t bitsMapping = 0;
 
-    if (*str == '#')
+    if (c == '#')
     {
         bitsMapping = 0b00000000;
     }
     else
     {
-        bitsMapping = numberBitsMapping[*str - '0'];
+        bitsMapping = numberBitsMapping[c - '0'];
     }
 
     digitalWrite(this->latchPin, LOW);
@@ -75,7 +75,7 @@ void SevenSegmentDisplay::turnOn() const
     digitalWrite(this->outputEnablePin, LOW);
 }
 
-void SevenSegmentDisplay::setLightIntensity(LightIntensity intensity) const
+void SevenSegmentDisplay::setLightIntensity(uint8_t intensity) const
 {
-    analogWrite(this->outputEnablePin, static_cast<uint8_t>(intensity));
+    analogWrite(this->outputEnablePin, intensity);
 }
