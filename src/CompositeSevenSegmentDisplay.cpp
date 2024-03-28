@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:45:29 by plouvel           #+#    #+#             */
-/*   Updated: 2024/03/28 15:55:02 by plouvel          ###   ########.fr       */
+/*   Updated: 2024/03/28 16:11:55 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,17 @@ void CompositeSevenSegmentDisplay<N>::popDisplay()
 }
 
 template <size_t N>
+const IDisplay &CompositeSevenSegmentDisplay<N>::getDisplay(size_t index) const
+{
+    if (index >= this->n)
+    {
+        return NULL;
+    }
+
+    return this->displays[index];
+}
+
+template <size_t N>
 void CompositeSevenSegmentDisplay<N>::display(char *str) const
 {
     char nextCharacter = 0;
@@ -59,5 +70,32 @@ void CompositeSevenSegmentDisplay<N>::display(char *str) const
         str[i + 1] = '\0';
         this->displays[i]->display(&str[i]);
         str[i + 1] = nextCharacter;
+    }
+}
+
+template <size_t N>
+void CompositeSevenSegmentDisplay<N>::turnOff() const
+{
+    for (uint8_t i = 0; i < this->n; i++)
+    {
+        this->displays[i]->turnOff();
+    }
+}
+
+template <size_t N>
+void CompositeSevenSegmentDisplay<N>::turnOn() const
+{
+    for (uint8_t i = 0; i < this->n; i++)
+    {
+        this->displays[i]->turnOn();
+    }
+}
+
+template <size_t N>
+void CompositeSevenSegmentDisplay<N>::setLightIntensity(LightIntensity intensity) const
+{
+    for (uint8_t i = 0; i < this->n; i++)
+    {
+        this->displays[i]->setLightIntensity(intensity);
     }
 }

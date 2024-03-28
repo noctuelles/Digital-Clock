@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:43:23 by plouvel           #+#    #+#             */
-/*   Updated: 2024/03/28 15:54:01 by plouvel          ###   ########.fr       */
+/*   Updated: 2024/03/28 16:08:24 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,13 @@ public:
 
     void pushDisplay(IDisplay *display);
     void popDisplay();
-    void selectDisplay(size_t index);
+
+    const IDisplay &getDisplay(size_t index) const;
+
     void display(char *str) const override;
+    void turnOff() const override;
+    void turnOn() const override;
+    void setLightIntensity(LightIntensity intensity) const override;
 
 private:
     CompositeSevenSegmentDisplay &operator=(const CompositeSevenSegmentDisplay &other) = delete;

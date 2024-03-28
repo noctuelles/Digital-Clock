@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:48:06 by plouvel           #+#    #+#             */
-/*   Updated: 2024/03/28 15:52:50 by plouvel          ###   ########.fr       */
+/*   Updated: 2024/03/28 16:07:52 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,33 @@ const uint8_t SevenSegmentDisplay::numberBitsMapping[SevenSegmentDisplay::nbrAva
     0b10111110  // 9
 };
 
-SevenSegmentDisplay::SevenSegmentDisplay(uint8_t latchPin, uint8_t clockPin, uint8_t dataPin) : latchPin(latchPin),
-                                                                                                clockPin(clockPin),
-                                                                                                dataPin(dataPin)
+SevenSegmentDisplay::SevenSegmentDisplay(uint8_t latchPin, uint8_t clockPin, uint8_t dataPin, uint8_t outputEnablePin) : latchPin(latchPin),
+                                                                                                                         clockPin(clockPin),
+                                                                                                                         dataPin(dataPin),
+                                                                                                                         outputEnablePin(outputEnablePin)
 {
     pinMode(this->latchPin, OUTPUT);
     pinMode(this->clockPin, OUTPUT);
     pinMode(this->dataPin, OUTPUT);
+    pinMode(this->outputEnablePin, OUTPUT);
+
+    this->turnOn();
 }
 
 SevenSegmentDisplay::~SevenSegmentDisplay() {}
 
 void SevenSegmentDisplay::display(char *str) const
 {
-    uint8_t bitsMapping = numberBitsMapping[*str - '0'];
+    uint8_t bitsMapping = 0;
+
+    if (*str == '#')
+    {
+        bitsMapping = 0b00000000;
+    }
+    else
+    {
+        bitsMapping = numberBitsMapping[*str - '0'];
+    }
 
     digitalWrite(this->latchPin, LOW);
     for (uint8_t i = 0; i < 8; i++)
@@ -50,4 +63,19 @@ void SevenSegmentDisplay::display(char *str) const
         digitalWrite(this->clockPin, HIGH);
     }
     digitalWrite(this->latchPin, HIGH);
+}
+
+void SevenSegmentDisplay::turnOff() const
+{
+    digitalWrite(this->outputEnablePin, HIGH);
+}
+
+void SevenSegmentDisplay::turnOn() const
+{
+    digitalWrite(this->outputEnablePin, LOW);
+}
+
+void SevenSegmentDisplay::setLightIntensity(LightIntensity intensity) const
+{
+    analogWrite(this->outputEnablePin, static_cast<uint8_t>(intensity));
 }
